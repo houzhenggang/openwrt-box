@@ -3,5 +3,9 @@
 openwrt/scripts/feeds update -a
 openwrt/scripts/feeds install -a
 
-ln -s  package/libs/qt5 openwrt/package/libs/qt5
-ln -s config.openwrt openwrt/.config
+if [ ! -h ${PWD}/openwrt/.config ]; then 
+	mv ${PWD}/openwrt/.config ${PWD}/openwrt/config.old
+	ln -s ${PWD}/config.openwrt ${PWD}/openwrt/.config
+fi
+
+ln -s ${PWD}/package/libs/qt5 ${PWD}/openwrt/package/libs/qt5
