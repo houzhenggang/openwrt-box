@@ -11,6 +11,7 @@ PKG_NAME:=qt5
 PKG_VERSION:=5.0.2
 PKG_RELEASE:=1
 PKG_MD5SUM:=87cae8ae2f82f41ba027c2db0ab639b7
+PKG_INSTALL:=1
 
 PKG_SOURCE:=qt-everywhere-opensource-src-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=http://download.qt-project.org/official_releases/qt/5.0/$(PKG_VERSION)/single
@@ -44,6 +45,13 @@ define Package/qt5-network
   $(call Package/qt5/Default)
   TITLE+=network
   DEPENDS+=+qt5-core
+endef
+
+define Build/Install
+	$(call Package/qt5-core/install,$(1))
+	$(call Package/qt5-concurrent/install,$(1))
+	$(call Package/qt5-network/install,$(1))
+	$(call Build/InstallDev,$(1))
 endef
 
 define Build/Configure
@@ -141,7 +149,6 @@ define Build/Compile
 endef
 
 define Build/InstallDev
-	$(INSTALL_DIR) $(2)/bin 
 	$(INSTALL_DIR) $(1)/bin
 	$(INSTALL_DIR) $(1)/usr/mkspecs 
 	$(INSTALL_DIR) $(1)/usr/bin
@@ -155,11 +162,11 @@ define Build/InstallDev
 
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/bin/* \
-		$(2)/bin/
+		$(1)/bin/
 		
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/bin/* \
-		$(2)/bin/
+		$(1)/bin/
 
 	$(CP) \
 		$(PKG_INSTALL_DIR)/usr/mkspecs/* \
